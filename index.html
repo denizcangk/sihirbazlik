@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sinema Daveti</title>
+    <meta name="description" content="Kucuk, israrci ve kacissiz bir sinema daveti." />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="cinema-shell">
+      <div class="film-strip film-strip-top" aria-hidden="true"></div>
+      <div class="film-strip film-strip-bottom" aria-hidden="true"></div>
+      <div class="curtain curtain-left" aria-hidden="true"></div>
+      <div class="curtain curtain-right" aria-hidden="true"></div>
+      <div class="stage-lines" aria-hidden="true"></div>
+
+      <section class="invite-card" aria-live="polite">
+        <div id="inviteStage">
+          <div class="movie-icons" aria-hidden="true">
+            <span>🍿</span>
+            <span>🎬</span>
+          </div>
+          <h1>Sen, ben, sinema?</h1>
+          <p class="subtitle">Popcorn benden, film senden. 😊</p>
+          <div class="button-zone">
+            <button class="yes-button" id="yesButton" type="button">Evet 🍿</button>
+            <button class="no-button" id="noButton" type="button" aria-disabled="true">Hayır</button>
+          </div>
+          <p class="sarcasm" id="sarcasm">&nbsp;</p>
+        </div>
+
+        <div id="dateStage" hidden>
+          <div class="movie-icons single" aria-hidden="true">
+            <span>🎟️</span>
+          </div>
+          <h1>Harika seçim.</h1>
+          <p class="subtitle">17.08.2026 ile 21.08.2026 arasından bir gün seç.</p>
+          <div class="date-grid" aria-label="Sinema günü seç">
+            <button class="date-button" type="button" data-label="17.08.2026" data-value="17 Ağustos 2026 Pazartesi">
+              <span>Pazartesi</span><strong>17.08.2026</strong>
+            </button>
+            <button class="date-button" type="button" data-label="18.08.2026" data-value="18 Ağustos 2026 Salı">
+              <span>Salı</span><strong>18.08.2026</strong>
+            </button>
+            <button class="date-button" type="button" data-label="19.08.2026" data-value="19 Ağustos 2026 Çarşamba">
+              <span>Çarşamba</span><strong>19.08.2026</strong>
+            </button>
+            <button class="date-button" type="button" data-label="20.08.2026" data-value="20 Ağustos 2026 Perşembe">
+              <span>Perşembe</span><strong>20.08.2026</strong>
+            </button>
+            <button class="date-button" type="button" data-label="21.08.2026" data-value="21 Ağustos 2026 Cuma">
+              <span>Cuma</span><strong>21.08.2026</strong>
+            </button>
+          </div>
+        </div>
+
+        <div id="doneStage" hidden>
+          <div class="movie-icons single" aria-hidden="true">
+            <span>🥳</span>
+          </div>
+          <h1>Tamamdır.</h1>
+          <p class="subtitle">Seçilen gün: <strong id="selectedText"></strong></p>
+          <p class="helper-text" id="saveStatus">Seçim sana e-posta olarak gönderiliyor...</p>
+          <div class="send-actions">
+            <a class="yes-button action-link" id="whatsappLink" target="_blank" rel="noreferrer">WhatsApp</a>
+            <a class="secondary-link" id="smsLink">SMS</a>
+            <a class="secondary-link" id="mailLink">E-posta</a>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>
