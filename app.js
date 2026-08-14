@@ -1,6 +1,3 @@
-const phoneNumber = "905302205064";
-const smsNumber = "+905302205064";
-const emailAddress = "denizcan_gokalp@hotmail.com";
 const formSubmitEndpoint = "https://formsubmit.co/ajax/denizcan_gokalp@hotmail.com";
 
 const sarcasticLines = [
@@ -24,9 +21,6 @@ const yesButton = document.querySelector("#yesButton");
 const sarcasm = document.querySelector("#sarcasm");
 const selectedText = document.querySelector("#selectedText");
 const saveStatus = document.querySelector("#saveStatus");
-const whatsappLink = document.querySelector("#whatsappLink");
-const smsLink = document.querySelector("#smsLink");
-const mailLink = document.querySelector("#mailLink");
 let attempts = 0;
 
 function show(stage) {
@@ -82,25 +76,16 @@ async function notifyOwner(label, value) {
 async function selectDate(button) {
   const label = button.dataset.label;
   const value = button.dataset.value;
-  const message = `Sinema için ${value} bana uyar. Popcorn hazır mı?`;
-  const encoded = encodeURIComponent(message);
 
   selectedText.textContent = value;
-  whatsappLink.href = `https://wa.me/${phoneNumber}?text=${encoded}`;
-  smsLink.href = `sms:${smsNumber}?&body=${encoded}`;
-  mailLink.href = `mailto:${emailAddress}?subject=${encodeURIComponent("Sinema günü seçildi")}&body=${encoded}`;
   show("done");
 
   try {
     await notifyOwner(label, value);
-    saveStatus.textContent = "Seçim sana e-posta olarak gönderildi. WhatsApp da açılıyor...";
+    saveStatus.textContent = "Seçim bana e-posta olarak geldi.";
   } catch {
-    saveStatus.textContent = "E-posta bildirimi takıldıysa aşağıdaki hazır mesaj seçenekleri duruyor.";
+    saveStatus.textContent = "Bildirim takıldıysa bile bu tarihi ekran görüntüsüyle garantiye alabilirsin.";
   }
-
-  window.setTimeout(() => {
-    window.location.href = whatsappLink.href;
-  }, 650);
 }
 
 yesButton.addEventListener("click", () => show("dates"));
