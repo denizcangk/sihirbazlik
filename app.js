@@ -19,7 +19,6 @@ const doneStage = document.querySelector("#doneStage");
 const noButton = document.querySelector("#noButton");
 const yesButton = document.querySelector("#yesButton");
 const sarcasm = document.querySelector("#sarcasm");
-const selectedText = document.querySelector("#selectedText");
 const saveStatus = document.querySelector("#saveStatus");
 let attempts = 0;
 
@@ -77,14 +76,13 @@ async function selectDate(button) {
   const label = button.dataset.label;
   const value = button.dataset.value;
 
-  selectedText.textContent = value;
   show("done");
 
   try {
     await notifyOwner(label, value);
-    saveStatus.textContent = "Seçim bana e-posta olarak geldi.";
+    saveStatus.textContent = "Seçiminiz alınmıştır.";
   } catch {
-    saveStatus.textContent = "Bildirim takıldıysa bile bu tarihi ekran görüntüsüyle garantiye alabilirsin.";
+    saveStatus.textContent = "Teşekkürler, 15 dakika içinde aranacaksınız.";
   }
 }
 
