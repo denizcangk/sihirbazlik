@@ -277,6 +277,94 @@ h1 {
   line-height: 1.45;
 }
 
+.verdict-panel {
+  margin: 28px auto 0;
+  padding-top: 22px;
+  border-top: 1px solid rgba(242, 199, 107, 0.32);
+}
+
+.verdict-panel h2 {
+  margin: 0;
+  color: var(--cream);
+  font-size: clamp(30px, 5vw, 52px);
+  line-height: 1.05;
+}
+
+.verdict-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  min-height: 70px;
+  margin-top: 18px;
+}
+
+.verdict-yes,
+.verdict-no {
+  min-width: 126px;
+  min-height: 58px;
+  border: 0;
+  border-radius: 999px;
+  padding: 0 32px;
+  font-size: 22px;
+  font-weight: 900;
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    filter 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.verdict-yes {
+  color: #111019;
+  background: linear-gradient(180deg, #42f2b3, #16b978);
+  box-shadow: 0 0 28px rgba(56, 242, 176, 0.38);
+}
+
+.verdict-no {
+  color: var(--cream);
+  background: linear-gradient(180deg, #7a284a, #3d1028);
+  border: 2px solid rgba(242, 199, 107, 0.55);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
+}
+
+.verdict-yes:hover,
+.verdict-yes:focus-visible {
+  transform: translateY(-2px);
+  filter: brightness(1.06);
+}
+
+.verdict-no-floating {
+  position: fixed;
+  z-index: 8;
+}
+
+.bird-away {
+  pointer-events: none;
+  min-width: 70px;
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  font-size: 42px;
+  animation: birdFlight 900ms ease-in forwards;
+}
+
+.snark-line {
+  min-height: 50px;
+  margin: 12px auto 0;
+  max-width: 590px;
+  color: var(--gold);
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.35;
+  opacity: 0;
+  transition: opacity 160ms ease;
+}
+
+.snark-line-visible {
+  opacity: 1;
+}
+
 .revealed h1 {
   color: var(--gold);
   font-size: clamp(54px, 10vw, 116px);
@@ -319,6 +407,18 @@ h1 {
   }
 }
 
+@keyframes birdFlight {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0deg) scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(180px, -180px) rotate(28deg) scale(0.62);
+  }
+}
+
 @media (max-width: 720px) {
   .magic-shell {
     min-height: 100dvh;
@@ -340,7 +440,9 @@ h1 {
   }
 
   .primary-button,
-  .ghost-button {
+  .ghost-button,
+  .verdict-yes,
+  .verdict-no {
     width: 100%;
     max-width: 310px;
   }

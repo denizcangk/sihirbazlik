@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Sihirbazlık Numarası</title>
     <meta name="description" content="Aklindan tuttugun sayiyi bilen kucuk bir sihirbazlik numarasi." />
-    <link rel="stylesheet" href="styles.css?v=4" />
+    <link rel="stylesheet" href="styles.css?v=5" />
   </head>
   <body>
     <main class="magic-shell">
@@ -40,8 +40,17 @@
         </div>
 
         <p class="stage-note" id="stageNote">Sayıyı yüksek sesle söyleme. Sihir kaçmasın.</p>
+
+        <div class="verdict-panel" id="verdictPanel" hidden>
+          <h2>Bildim mi?</h2>
+          <div class="verdict-buttons">
+            <button class="verdict-yes" id="verdictYes" type="button">Evet</button>
+            <button class="verdict-no" id="verdictNo" type="button" aria-disabled="true">Hayır</button>
+          </div>
+          <p class="snark-line" id="snarkLine">&nbsp;</p>
+        </div>
       </section>
     </main>
-    <script src="app.js?v=4"></script>
+    <script src="app.js?v=5"></script>
   </body>
 </html>
