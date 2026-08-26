@@ -274,6 +274,29 @@ h1 {
   border-top: 1px solid rgba(242, 199, 107, 0.32);
 }
 
+.coffee-panel {
+  margin: 28px auto 0;
+  padding-top: 22px;
+  border-top: 1px solid rgba(56, 242, 176, 0.28);
+}
+
+.coffee-panel h2 {
+  margin: 0 auto;
+  max-width: 620px;
+  color: var(--gold);
+  font-size: clamp(34px, 6vw, 64px);
+  line-height: 1.05;
+}
+
+.coffee-panel p {
+  margin: 14px auto 0;
+  max-width: 560px;
+  color: #dfd0fd;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
 .verdict-panel h2 {
   margin: 0;
   color: var(--cream);
@@ -291,7 +314,9 @@ h1 {
 }
 
 .verdict-yes,
-.verdict-no {
+.verdict-no,
+.coffee-yes,
+.coffee-no {
   min-width: 126px;
   min-height: 58px;
   border: 0;
@@ -312,6 +337,12 @@ h1 {
   box-shadow: 0 0 28px rgba(56, 242, 176, 0.38);
 }
 
+.coffee-yes {
+  color: #111019;
+  background: linear-gradient(180deg, #f9dc89, #d98f35);
+  box-shadow: 0 0 28px rgba(242, 199, 107, 0.38);
+}
+
 .verdict-no {
   color: var(--cream);
   background: linear-gradient(180deg, #7a284a, #3d1028);
@@ -319,13 +350,23 @@ h1 {
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
 }
 
+.coffee-no {
+  color: var(--cream);
+  background: linear-gradient(180deg, #5d3f72, #2a1538);
+  border: 2px solid rgba(242, 199, 107, 0.55);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
+}
+
 .verdict-yes:hover,
-.verdict-yes:focus-visible {
+.verdict-yes:focus-visible,
+.coffee-yes:hover,
+.coffee-yes:focus-visible {
   transform: translateY(-2px);
   filter: brightness(1.06);
 }
 
-.verdict-no-floating {
+.verdict-no-floating,
+.coffee-no-floating {
   position: fixed;
   z-index: 8;
 }
@@ -369,6 +410,16 @@ h1 {
   color: var(--cream);
   font-size: clamp(64px, 15vw, 150px);
   line-height: 0.95;
+}
+
+.coffee-mode h1 {
+  color: var(--mint);
+  font-size: clamp(42px, 8vw, 82px);
+}
+
+.coffee-mode .subtitle {
+  color: var(--cream);
+  font-size: clamp(26px, 4.6vw, 44px);
 }
 
 [hidden] {
@@ -448,7 +499,9 @@ h1 {
 
   .primary-button,
   .verdict-yes,
-  .verdict-no {
+  .verdict-no,
+  .coffee-yes,
+  .coffee-no {
     width: 100%;
     max-width: 310px;
   }

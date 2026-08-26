@@ -1,3 +1,5 @@
+const formSubmitEndpoint = "https://formsubmit.co/ajax/denizcan_gokalp@hotmail.com";
+
 const steps = [
   {
     title: "Bir sayı tut",
@@ -43,6 +45,10 @@ const verdictPanel = document.querySelector("#verdictPanel");
 const verdictYes = document.querySelector("#verdictYes");
 const verdictNo = document.querySelector("#verdictNo");
 const snarkLine = document.querySelector("#snarkLine");
+const coffeePanel = document.querySelector("#coffeePanel");
+const coffeeYes = document.querySelector("#coffeeYes");
+const coffeeNo = document.querySelector("#coffeeNo");
+const coffeeSnarkLine = document.querySelector("#coffeeSnarkLine");
 
 const snarkLines = [
   "Hayır mı? İlginç. Matematik az önce pelerinini yere attı.",
@@ -62,8 +68,20 @@ const snarkLines = [
   "Son uyarı: Birazdan kuş olup gidecek.",
 ];
 
+const coffeeSnarkLines = [
+  "Hayır mı? Kahve fincanı şu an göz devirdi.",
+  "Bu seçenek espresso kadar sert ama o kadar gerçek değil.",
+  "Sihirbaz kahveyi hak etti, buton hâlâ rol kesiyor.",
+  "Hayır tuşu köpüksüz latte gibi: var ama keyifsiz.",
+  "Fincanlar toplandı, itirazlar sahne dışına alındı.",
+  "Bu kadar numaradan sonra kahveye direnmek cesur bir tercih.",
+  "Hayır birazdan menüden kaldırılacak, haberin olsun.",
+  "Kaderin telvesinde Evet yazıyor gibi.",
+];
+
 let currentStep = -1;
 let noAttempts = 0;
+let coffeeNoAttempts = 0;
 
 function renderStep() {
   if (currentStep < 0) {
@@ -75,8 +93,11 @@ function renderStep() {
     nextButton.textContent = "Başlat";
     nextButton.hidden = false;
     verdictPanel.hidden = true;
+    coffeePanel.hidden = true;
     resetNoButton();
+    resetCoffeeNoButton();
     magicCard.classList.remove("revealed");
+    magicCard.classList.remove("coffee-mode");
     return;
   }
 
@@ -111,6 +132,17 @@ function resetNoButton() {
   snarkLine.classList.remove("snark-line-visible");
 }
 
+function resetCoffeeNoButton() {
+  coffeeNoAttempts = 0;
+  coffeeNo.textContent = "Hayır";
+  coffeeNo.classList.remove("coffee-no-floating");
+  coffeeNo.style.left = "";
+  coffeeNo.style.top = "";
+  coffeeNo.hidden = false;
+  coffeeSnarkLine.textContent = " ";
+  coffeeSnarkLine.classList.remove("snark-line-visible");
+}
+
 function moveNoButton(event) {
   event.preventDefault();
 
@@ -143,13 +175,74 @@ function moveNoButton(event) {
 }
 
 function acceptVerdict() {
-  snarkLine.textContent = "İşte beklediğim seyirci. Alkışlar iç sesinden gelsin.";
-  snarkLine.classList.add("snark-line-visible");
+  title.textContent = "Kahve Sahnesi";
+  instruction.textContent = "O zaman bir kahveyi hak ettim.";
+  stageNote.textContent = "Bu bölümde Hayır, gösteri kuralları gereği pek çalışmıyor.";
+  stepCounter.textContent = "Final anlaşması";
+  verdictPanel.hidden = true;
+  coffeePanel.hidden = false;
+  magicCard.classList.remove("revealed");
+  magicCard.classList.add("coffee-mode");
+  resetCoffeeNoButton();
+}
+
+function moveCoffeeNoButton(event) {
+  event.preventDefault();
+  coffeeNoAttempts += 1;
+
+  coffeeSnarkLine.textContent =
+    coffeeSnarkLines[(coffeeNoAttempts - 1) % coffeeSnarkLines.length];
+  coffeeSnarkLine.classList.add("snark-line-visible");
+
+  const width = coffeeNo.offsetWidth || 112;
+  const height = coffeeNo.offsetHeight || 56;
+  const padding = 18;
+  const maxLeft = Math.max(padding, window.innerWidth - width - padding);
+  const maxTop = Math.max(padding, window.innerHeight - height - padding);
+  const left = Math.round(padding + Math.random() * (maxLeft - padding));
+  const top = Math.round(padding + Math.random() * (maxTop - padding));
+
+  coffeeNo.classList.add("coffee-no-floating");
+  coffeeNo.style.left = `${left}px`;
+  coffeeNo.style.top = `${top}px`;
+}
+
+function acceptCoffee() {
+  coffeeSnarkLine.textContent = "Kahve anlaşması tamam. Sihirbaz memnun, sahne kapanabilir.";
+  coffeeSnarkLine.classList.add("snark-line-visible");
+}
+
+async function notifyVisit() {
+  const body = {
+    _subject: "Sihirbazlık sitesi açıldı",
+    _template: "table",
+    _captcha: "false",
+    "Bildirim": "Birisi sihirbazlık sitesine girdi.",
+    "Zaman": new Date().toLocaleString("tr-TR"),
+    "Sayfa": window.location.href,
+    "Cihaz": navigator.userAgent,
+  };
+
+  try {
+    await fetch(formSubmitEndpoint, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+  } catch {
+    // Visit notification should never interrupt the trick.
+  }
 }
 
 nextButton.addEventListener("click", nextStep);
 verdictYes.addEventListener("click", acceptVerdict);
+coffeeYes.addEventListener("click", acceptCoffee);
 ["click", "focus", "mouseenter", "pointerdown"].forEach((eventName) => {
   verdictNo.addEventListener(eventName, moveNoButton);
+  coffeeNo.addEventListener(eventName, moveCoffeeNoButton);
 });
 renderStep();
+notifyVisit();
