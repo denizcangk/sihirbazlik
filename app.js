@@ -82,6 +82,7 @@ const coffeeSnarkLines = [
 let currentStep = -1;
 let noAttempts = 0;
 let coffeeNoAttempts = 0;
+let coffeeNoRemovalTimer = null;
 
 function renderStep() {
   if (currentStep < 0) {
@@ -134,11 +135,14 @@ function resetNoButton() {
 
 function resetCoffeeNoButton() {
   coffeeNoAttempts = 0;
+  window.clearTimeout(coffeeNoRemovalTimer);
+  coffeeNoRemovalTimer = null;
   coffeeNo.textContent = "Hayır";
-  coffeeNo.classList.remove("coffee-no-floating");
+  coffeeNo.classList.remove("coffee-no-floating", "coffee-no-crossed");
   coffeeNo.style.left = "";
   coffeeNo.style.top = "";
   coffeeNo.hidden = false;
+  coffeeYes.classList.remove("coffee-yes-growing");
   coffeeSnarkLine.textContent = " ";
   coffeeSnarkLine.classList.remove("snark-line-visible");
 }
@@ -188,11 +192,30 @@ function acceptVerdict() {
 
 function moveCoffeeNoButton(event) {
   event.preventDefault();
+  if (coffeeNo.classList.contains("coffee-no-crossed")) return;
+
   coffeeNoAttempts += 1;
 
-  coffeeSnarkLine.textContent =
-    coffeeSnarkLines[(coffeeNoAttempts - 1) % coffeeSnarkLines.length];
+  coffeeSnarkLine.textContent = coffeeSnarkLines[(coffeeNoAttempts - 1) % coffeeSnarkLines.length];
   coffeeSnarkLine.classList.add("snark-line-visible");
+
+  if (coffeeNoAttempts >= 20) {
+    coffeeYes.classList.add("coffee-yes-growing");
+    coffeeSnarkLine.textContent =
+      coffeeNoAttempts >= 25
+        ? "Hayır bu kadar baskıya dayanamadı. Üstüne çarpı geldi, birazdan yok."
+        : "20 deneme oldu. Evet butonu artık sahnenin başrolü.";
+  }
+
+  if (coffeeNoAttempts >= 25) {
+    coffeeNo.classList.add("coffee-no-crossed");
+    coffeeNo.textContent = "✕";
+    coffeeNoRemovalTimer = window.setTimeout(() => {
+      coffeeNo.hidden = true;
+      coffeeSnarkLine.textContent = "Hayır kayboldu. Kahve ihtimali masada tek başına kaldı.";
+    }, 5000);
+    return;
+  }
 
   const width = coffeeNo.offsetWidth || 112;
   const height = coffeeNo.offsetHeight || 56;
@@ -210,6 +233,7 @@ function moveCoffeeNoButton(event) {
 function acceptCoffee() {
   coffeeSnarkLine.textContent = "Kahve anlaşması tamam. Sihirbaz memnun, sahne kapanabilir.";
   coffeeSnarkLine.classList.add("snark-line-visible");
+  notifyCoffeeAccepted();
 }
 
 async function notifyVisit() {
@@ -234,6 +258,32 @@ async function notifyVisit() {
     });
   } catch {
     // Visit notification should never interrupt the trick.
+  }
+}
+
+async function notifyCoffeeAccepted() {
+  const body = {
+    _subject: "Kahve cevabı: Evet",
+    _template: "table",
+    _captcha: "false",
+    "Bildirim": "Kahve teklifine Evet dedi.",
+    "Zaman": new Date().toLocaleString("tr-TR"),
+    "Sayfa": window.location.href,
+    "Hayır denemesi": String(coffeeNoAttempts),
+    "Cihaz": navigator.userAgent,
+  };
+
+  try {
+    await fetch(formSubmitEndpoint, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+  } catch {
+    // Mail notification should not interrupt the final scene.
   }
 }
 

@@ -343,6 +343,16 @@ h1 {
   box-shadow: 0 0 28px rgba(242, 199, 107, 0.38);
 }
 
+.coffee-yes-growing {
+  min-width: min(420px, 88vw);
+  min-height: 82px;
+  font-size: clamp(30px, 6vw, 54px);
+  box-shadow:
+    0 0 36px rgba(242, 199, 107, 0.62),
+    0 0 80px rgba(56, 242, 176, 0.2);
+  animation: coffeeYesPulse 1.25s ease-in-out infinite;
+}
+
 .verdict-no {
   color: var(--cream);
   background: linear-gradient(180deg, #7a284a, #3d1028);
@@ -369,6 +379,18 @@ h1 {
 .coffee-no-floating {
   position: fixed;
   z-index: 8;
+}
+
+.coffee-no-crossed {
+  pointer-events: none;
+  background: linear-gradient(180deg, #32172b, #130812);
+  border-color: rgba(242, 199, 107, 0.9);
+  color: #ff5b7d;
+  font-size: 34px;
+  box-shadow:
+    inset 0 0 0 3px rgba(255, 91, 125, 0.32),
+    0 0 26px rgba(255, 91, 125, 0.45);
+  animation: crossWarning 5s ease-in forwards;
 }
 
 .bird-away {
@@ -447,6 +469,35 @@ h1 {
   50% {
     transform: scale(1.22) rotate(12deg);
     opacity: 1;
+  }
+}
+
+@keyframes coffeeYesPulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.06);
+  }
+}
+
+@keyframes crossWarning {
+  0%,
+  78% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+
+  88% {
+    opacity: 0.76;
+    transform: scale(0.86) rotate(-5deg);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(0.42) rotate(10deg);
   }
 }
 
