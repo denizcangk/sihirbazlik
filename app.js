@@ -38,7 +38,6 @@ const stageNote = document.querySelector("#stageNote");
 const stepCounter = document.querySelector("#stepCounter");
 const progressBar = document.querySelector("#progressBar");
 const nextButton = document.querySelector("#nextButton");
-const resetButton = document.querySelector("#resetButton");
 const magicCard = document.querySelector(".magic-card");
 const verdictPanel = document.querySelector("#verdictPanel");
 const verdictYes = document.querySelector("#verdictYes");
@@ -75,7 +74,6 @@ function renderStep() {
     progressBar.style.width = "0%";
     nextButton.textContent = "Başlat";
     nextButton.hidden = false;
-    resetButton.hidden = true;
     verdictPanel.hidden = true;
     resetNoButton();
     magicCard.classList.remove("revealed");
@@ -92,18 +90,12 @@ function renderStep() {
   progressBar.style.width = `${percent}%`;
   nextButton.textContent = currentStep >= steps.length - 2 ? "Sonucu göster" : "Devam";
   nextButton.hidden = Boolean(step.reveal);
-  resetButton.hidden = !step.reveal;
   verdictPanel.hidden = !step.reveal;
   magicCard.classList.toggle("revealed", Boolean(step.reveal));
 }
 
 function nextStep() {
   currentStep = Math.min(currentStep + 1, steps.length - 1);
-  renderStep();
-}
-
-function resetTrick() {
-  currentStep = -1;
   renderStep();
 }
 
@@ -146,7 +138,7 @@ function moveNoButton(event) {
     snarkLine.textContent = "Tamam, Hayır kuş olup gitti. Sahne Evet'e kaldı.";
     window.setTimeout(() => {
       verdictNo.hidden = true;
-    }, 950);
+    }, 2100);
   }
 }
 
@@ -156,7 +148,6 @@ function acceptVerdict() {
 }
 
 nextButton.addEventListener("click", nextStep);
-resetButton.addEventListener("click", resetTrick);
 verdictYes.addEventListener("click", acceptVerdict);
 ["click", "focus", "mouseenter", "pointerdown"].forEach((eventName) => {
   verdictNo.addEventListener(eventName, moveNoButton);
