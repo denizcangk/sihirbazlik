@@ -3,68 +3,45 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Sinema Daveti</title>
-    <meta name="description" content="Kucuk, israrci ve kacissiz bir sinema daveti." />
-    <link rel="stylesheet" href="styles.css?v=2" />
+    <title>Sihirbazlık Numarası</title>
+    <meta name="description" content="Aklindan tuttugun sayiyi bilen kucuk bir sihirbazlik numarasi." />
+    <link rel="stylesheet" href="styles.css?v=4" />
   </head>
   <body>
-    <main class="cinema-shell">
-      <div class="film-strip film-strip-top" aria-hidden="true"></div>
-      <div class="film-strip film-strip-bottom" aria-hidden="true"></div>
-      <div class="curtain curtain-left" aria-hidden="true"></div>
-      <div class="curtain curtain-right" aria-hidden="true"></div>
-      <div class="stage-lines" aria-hidden="true"></div>
+    <main class="magic-shell">
+      <div class="spotlight" aria-hidden="true"></div>
+      <div class="spark spark-one" aria-hidden="true">✦</div>
+      <div class="spark spark-two" aria-hidden="true">✧</div>
+      <div class="spark spark-three" aria-hidden="true">✦</div>
 
-      <section class="invite-card" aria-live="polite">
-        <div id="inviteStage">
-          <div class="movie-icons" aria-hidden="true">
-            <span>🍿</span>
-            <span>🎬</span>
-          </div>
-          <h1>Sen, ben, sinema?</h1>
-          <p class="subtitle">Popcorn benden. 😊</p>
-          <div class="button-zone">
-            <button class="yes-button" id="yesButton" type="button">Evet 🍿</button>
-            <button class="no-button" id="noButton" type="button" aria-disabled="true">Hayır</button>
-          </div>
-          <p class="sarcasm" id="sarcasm">&nbsp;</p>
+      <section class="magic-card" aria-live="polite">
+        <div class="hat" aria-hidden="true">
+          <div class="hat-top"></div>
+          <div class="hat-band"></div>
+          <div class="hat-brim"></div>
+          <span class="wand">✦</span>
         </div>
 
-        <div id="dateStage" hidden>
-          <div class="movie-icons single" aria-hidden="true">
-            <span>🎟️</span>
-          </div>
-          <h1>Harika seçim.</h1>
-          <p class="subtitle">17.08.2026 ile 21.08.2026 arasından bir gün seç.</p>
-          <div class="date-grid" aria-label="Sinema günü seç">
-            <button class="date-button" type="button" data-label="17.08.2026" data-value="17 Ağustos 2026 Pazartesi">
-              <span>Pazartesi</span><strong>17.08.2026</strong>
-            </button>
-            <button class="date-button" type="button" data-label="18.08.2026" data-value="18 Ağustos 2026 Salı">
-              <span>Salı</span><strong>18.08.2026</strong>
-            </button>
-            <button class="date-button" type="button" data-label="19.08.2026" data-value="19 Ağustos 2026 Çarşamba">
-              <span>Çarşamba</span><strong>19.08.2026</strong>
-            </button>
-            <button class="date-button" type="button" data-label="20.08.2026" data-value="20 Ağustos 2026 Perşembe">
-              <span>Perşembe</span><strong>20.08.2026</strong>
-            </button>
-            <button class="date-button" type="button" data-label="21.08.2026" data-value="21 Ağustos 2026 Cuma">
-              <span>Cuma</span><strong>21.08.2026</strong>
-            </button>
-          </div>
+        <p class="eyebrow">Canlı gösteri</p>
+        <h1 id="title">Sihirli Sayı Numarası</h1>
+        <p class="subtitle" id="instruction">
+          Aklından bir sayı tut. Birkaç hamle sonra sonucu ben söyleyeceğim.
+        </p>
+
+        <div class="progress-wrap" aria-hidden="true">
+          <div class="progress-bar" id="progressBar"></div>
         </div>
 
-        <div id="doneStage" hidden>
-          <div class="movie-icons single" aria-hidden="true">
-            <span>🥳</span>
-          </div>
-          <h1>Teşekkürler.</h1>
-          <p class="subtitle">15 dakika içinde aranacaksınız.</p>
-          <p class="helper-text" id="saveStatus">Seçiminiz alınmıştır.</p>
+        <div class="step-counter" id="stepCounter">Hazır</div>
+
+        <div class="button-row">
+          <button class="primary-button" id="nextButton" type="button">Başlat</button>
+          <button class="ghost-button" id="resetButton" type="button" hidden>Tekrar yap</button>
         </div>
+
+        <p class="stage-note" id="stageNote">Sayıyı yüksek sesle söyleme. Sihir kaçmasın.</p>
       </section>
     </main>
-    <script src="app.js?v=3"></script>
+    <script src="app.js?v=4"></script>
   </body>
 </html>

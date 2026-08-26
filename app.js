@@ -1,95 +1,86 @@
-const formSubmitEndpoint = "https://formsubmit.co/ajax/denizcan_gokalp@hotmail.com";
-
-const sarcasticLines = [
-  "Hayır butonu şu an toplantıda, sonra dene.",
-  "Bu seçenek dramatik amaçlı konuldu, çalışmıyor.",
-  "Kaçış sahnesi başladı. Oyunculuk fena değil.",
-  "Hayır mı? Cesur bir deneme, başarısız ama cesur.",
-  "Sen basmaya çalış, ben dekoru değiştireyim.",
-  "Bu butonun sendromu var: bağlanma korkusu.",
-  "Yönetmen 'Evet'e yakın plan istedi.",
-  "Hayır butonu bile bu fikre pek inanmıyor.",
-  "Alternatif evrende belki. Bu evrende sinema.",
-  "Popcorn kokusu geldi, karar belli gibi.",
+const steps = [
+  {
+    title: "Bir sayı tut",
+    instruction: "Aklından 1 ile 10 arasında bir sayı tut. Kimseye söyleme.",
+    note: "Tamam mı? O sayı artık sahnede görünmez bir yerde duruyor.",
+  },
+  {
+    title: "İkiye katla",
+    instruction: "Tuttuğun sayıyı 2 ile çarp.",
+    note: "Kafadan işlem serbest. Hesap makinesi kullanmak gösterinin karizmasını azaltır.",
+  },
+  {
+    title: "Biraz sis ekleyelim",
+    instruction: "Çıkan sonuca 10 ekle.",
+    note: "Bu 10 sayısı burada dramatik efekt görevinde.",
+  },
+  {
+    title: "Yarısını al",
+    instruction: "Şimdi bu sonucu 2'ye böl.",
+    note: "Sahne ışıkları titredi. Gayet iyi gidiyoruz.",
+  },
+  {
+    title: "İlk sayıyı çıkar",
+    instruction: "Başta tuttuğun sayıyı bu sonuçtan çıkar.",
+    note: "Şimdi elimde hiçbir bilgi yokmuş gibi davranıyorum.",
+  },
+  {
+    title: "Cevabı görüyorum",
+    instruction: "Sonuç 5.",
+    note: "Teşekkürler, alkışları zihinsel olarak kabul ediyorum.",
+    reveal: true,
+  },
 ];
 
-const inviteStage = document.querySelector("#inviteStage");
-const dateStage = document.querySelector("#dateStage");
-const doneStage = document.querySelector("#doneStage");
-const noButton = document.querySelector("#noButton");
-const yesButton = document.querySelector("#yesButton");
-const sarcasm = document.querySelector("#sarcasm");
-const saveStatus = document.querySelector("#saveStatus");
-let attempts = 0;
+const title = document.querySelector("#title");
+const instruction = document.querySelector("#instruction");
+const stageNote = document.querySelector("#stageNote");
+const stepCounter = document.querySelector("#stepCounter");
+const progressBar = document.querySelector("#progressBar");
+const nextButton = document.querySelector("#nextButton");
+const resetButton = document.querySelector("#resetButton");
+const magicCard = document.querySelector(".magic-card");
 
-function show(stage) {
-  inviteStage.hidden = stage !== "invite";
-  dateStage.hidden = stage !== "dates";
-  doneStage.hidden = stage !== "done";
-}
+let currentStep = -1;
 
-function moveNoButton(event) {
-  event.preventDefault();
-  attempts += 1;
-
-  const width = noButton.offsetWidth || 132;
-  const height = noButton.offsetHeight || 56;
-  const padding = 18;
-  const maxLeft = Math.max(padding, window.innerWidth - width - padding);
-  const maxTop = Math.max(padding, window.innerHeight - height - padding);
-  const left = Math.round(padding + Math.random() * (maxLeft - padding));
-  const top = Math.round(padding + Math.random() * (maxTop - padding));
-
-  noButton.classList.add("no-button-floating");
-  noButton.style.left = `${left}px`;
-  noButton.style.top = `${top}px`;
-  sarcasm.textContent = sarcasticLines[(attempts - 1) % sarcasticLines.length];
-  sarcasm.classList.add("sarcasm-visible");
-}
-
-async function notifyOwner(label, value) {
-  const body = {
-    _subject: "Sinema günü seçildi",
-    _template: "table",
-    _captcha: "false",
-    "Secilen gun": value,
-    "Tarih etiketi": label,
-    "Gonderim zamani": new Date().toLocaleString("tr-TR"),
-    "Sayfa": window.location.href,
-  };
-
-  const response = await fetch(formSubmitEndpoint, {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(body),
-  });
-
-  if (!response.ok) {
-    throw new Error("E-posta bildirimi gönderilemedi.");
+function renderStep() {
+  if (currentStep < 0) {
+    title.textContent = "Sihirli Sayı Numarası";
+    instruction.textContent = "Aklından bir sayı tut. Birkaç hamle sonra sonucu ben söyleyeceğim.";
+    stageNote.textContent = "Sayıyı yüksek sesle söyleme. Sihir kaçmasın.";
+    stepCounter.textContent = "Hazır";
+    progressBar.style.width = "0%";
+    nextButton.textContent = "Başlat";
+    nextButton.hidden = false;
+    resetButton.hidden = true;
+    magicCard.classList.remove("revealed");
+    return;
   }
+
+  const step = steps[currentStep];
+  const percent = Math.round(((currentStep + 1) / steps.length) * 100);
+
+  title.textContent = step.title;
+  instruction.textContent = step.instruction;
+  stageNote.textContent = step.note;
+  stepCounter.textContent = step.reveal ? "Perde!" : `${currentStep + 1} / ${steps.length - 1}`;
+  progressBar.style.width = `${percent}%`;
+  nextButton.textContent = currentStep >= steps.length - 2 ? "Sonucu göster" : "Devam";
+  nextButton.hidden = Boolean(step.reveal);
+  resetButton.hidden = !step.reveal;
+  magicCard.classList.toggle("revealed", Boolean(step.reveal));
 }
 
-async function selectDate(button) {
-  const label = button.dataset.label;
-  const value = button.dataset.value;
-
-  show("done");
-
-  try {
-    await notifyOwner(label, value);
-    saveStatus.textContent = "Seçiminiz alınmıştır.";
-  } catch {
-    saveStatus.textContent = "Teşekkürler, 15 dakika içinde aranacaksınız.";
-  }
+function nextStep() {
+  currentStep = Math.min(currentStep + 1, steps.length - 1);
+  renderStep();
 }
 
-yesButton.addEventListener("click", () => show("dates"));
-["click", "focus", "mouseenter", "pointerdown"].forEach((eventName) => {
-  noButton.addEventListener(eventName, moveNoButton);
-});
-document.querySelectorAll(".date-button").forEach((button) => {
-  button.addEventListener("click", () => selectDate(button));
-});
+function resetTrick() {
+  currentStep = -1;
+  renderStep();
+}
+
+nextButton.addEventListener("click", nextStep);
+resetButton.addEventListener("click", resetTrick);
+renderStep();
